@@ -1,0 +1,1009 @@
+#include<cstdio>
+#include<math.h>>
+#include <GL/gl.h>
+#include <GL/glut.h>
+
+
+GLint  r2 = 255;
+
+GLint  r3 = 0;
+GLint  g3 = 0;
+GLint  b3 = 0;
+
+GLint  g4 = 0;
+
+
+
+GLfloat car1 = 0.0f;
+GLfloat car2 = 0.0f;
+GLfloat speed = 0.01f;
+GLfloat speed2 = 0.01f;
+GLfloat cloud = 0.0f;
+
+////////////////////////////
+GLfloat cloud1 = .0f;
+GLfloat cloud2 = .0f;
+bool day = true;
+GLfloat sunset = .0f;
+////////////////////////////
+
+void update(int value1);
+void stopCar(int value2);
+void update2(int value3);
+
+void update3(int value6);
+void stopCar2(int value2);
+void update4(int value7);
+
+void yellow(int value4);
+void green(int value5);
+void cloudfunc(int value6);
+
+
+
+//tunnel
+void circle(GLfloat X,GLfloat Y,GLfloat R,GLint r,GLint g,GLint b){
+int i;
+
+	GLfloat x=X; GLfloat y=Y; GLfloat radius =R;
+	int triangleAmount = 50;
+
+
+	GLfloat twicePi = 2.0f * M_PI;
+
+	glBegin(GL_TRIANGLE_FAN);
+	glColor3ub(r,g,b);
+
+		glVertex2f(x, y);
+		for(i = 0; i <= triangleAmount;i++) {
+			glVertex2f(
+
+		            x + (radius * cos(i *  twicePi / triangleAmount)),
+			    y + (radius * sin(i * twicePi / triangleAmount))
+			);
+		}
+	glEnd();
+
+}
+
+//red light
+void tLight1(GLfloat X,GLfloat Y,GLfloat R,GLint r2,GLint g2,GLint b2){
+int i;
+
+	GLfloat x=X; GLfloat y=Y; GLfloat radius =R;
+	int triangleAmount = 50;
+
+
+	GLfloat twicePi = 2.0f * M_PI;
+
+	glBegin(GL_TRIANGLE_FAN);
+	glColor3ub(r2,g2,b2);
+
+		glVertex2f(x, y);
+		for(i = 0; i <= triangleAmount;i++) {
+			glVertex2f(
+
+		            x + (radius * cos(i *  twicePi / triangleAmount)),
+			    y + (radius * sin(i * twicePi / triangleAmount))
+			);
+		}
+	glEnd();
+
+}
+
+//yellowlight
+void tLight2(GLfloat X,GLfloat Y,GLfloat R,GLint r3,GLint g3,GLint b3){
+int i;
+
+	GLfloat x=X; GLfloat y=Y; GLfloat radius =R;
+	int triangleAmount = 50;
+
+
+	GLfloat twicePi = 2.0f * M_PI;
+
+	glBegin(GL_TRIANGLE_FAN);
+	glColor3ub(r3,g3,b3);
+
+		glVertex2f(x, y);
+		for(i = 0; i <= triangleAmount;i++) {
+			glVertex2f(
+
+		            x + (radius * cos(i *  twicePi / triangleAmount)),
+			    y + (radius * sin(i * twicePi / triangleAmount))
+			);
+		}
+	glEnd();
+
+}
+
+//green light
+void tLight3(GLfloat X,GLfloat Y,GLfloat R,GLint r4,GLint g4,GLint b4){
+int i;
+
+	GLfloat x=X; GLfloat y=Y; GLfloat radius =R;
+	int triangleAmount = 50;
+
+
+	GLfloat twicePi = 2.0f * M_PI;
+
+	glBegin(GL_TRIANGLE_FAN);
+	glColor3ub(r4,g4,b4);
+
+		glVertex2f(x, y);
+		for(i = 0; i <= triangleAmount;i++) {
+			glVertex2f(
+
+		            x + (radius * cos(i *  twicePi / triangleAmount)),
+			    y + (radius * sin(i * twicePi / triangleAmount))
+			);
+		}
+	glEnd();
+
+}
+
+
+
+
+void cloudfunc( int value8)
+{ if (cloud < 1.5f)
+
+ {
+  cloud+= 0.01f;
+  glutPostRedisplay();
+  glutTimerFunc(300,cloudfunc,0);
+ }
+
+ else
+    {
+        cloud =0.0f;
+        cloudfunc(1);
+
+    }
+
+}
+
+
+//////////////////////////////////
+void drawCloud(GLfloat x, GLfloat y, GLfloat radius, int rr, int gg, int bb)
+{
+    int i;
+    int triangleAmount = 1000;
+    GLfloat twicePi = 2.0f * 3.14;
+
+	glBegin(GL_TRIANGLE_FAN);
+	glColor3ub(rr,gg,bb);
+
+		glVertex2f(x, y);
+		for(i = 0; i <= triangleAmount;i++) {
+			glVertex2f(
+
+		            x + (radius * cos(i *  twicePi / triangleAmount)), y + (radius * sin(i * twicePi / triangleAmount))
+			);
+		}
+	glEnd();
+}
+
+///////////////////////////////////
+
+
+
+
+void update(int value1) {
+
+if (r2 == 255 && car1 > 0.35f)
+    {
+        update2(1);
+    }
+
+  else  if( r2 == 255 && car1 < 0.36f )
+    {
+           car1 += speed;
+           glutPostRedisplay();
+            stopCar(1);
+            printf("reed");
+
+
+    }
+
+    else if ( r2 == 0 )
+    {
+        update2(1);
+        printf("aaaaaa");
+    }
+
+
+}
+
+
+//car stops
+void stopCar(int value2)
+{
+    if ( r2 == 255 && car1 > 0.34f )
+    {
+        speed = 0.0f;
+        glutPostRedisplay();
+    }
+
+    else
+    {
+       glutTimerFunc(30, update, 0);
+    }
+}
+
+void update2(int value3)
+{
+    if ( r2 == 0 && car1 < 1.33f  )
+    {
+        speed=0.011;
+        car1 += speed;
+        glutPostRedisplay();
+        glutTimerFunc(30, stopCar, 0);
+        printf("2");
+    }
+
+     else if ( r2 == 255 && car1 <= 1.33f  )
+    {
+        speed=0.01;
+        car1 += speed;
+        glutPostRedisplay();
+        glutTimerFunc(30, update2, 0);
+        printf("2");
+    }
+
+
+    else if ( r2 == 0 && car1 > 1.33f )
+    {
+
+        car1 = 0.0f;
+        glutTimerFunc(30, stopCar, 0);
+        printf("3");
+    }
+
+     else if ( r2 == 255 && car1 > 1.33f )
+    {
+
+        car1 = 0.0f;
+        glutTimerFunc(20, stopCar, 0);
+        printf("3");
+    }
+
+}
+
+
+void update3(int value6)
+{//
+    if ( g4 == 0 && car2 < 1.5f)
+    {
+
+       car2 += speed2;
+        glutPostRedisplay();
+        glutTimerFunc(30,update3,0);
+
+
+}
+//r2 == 255 &&
+     else if (g4 == 0 && car2 > 1.5f)
+    {
+        car2=0.0f;
+        glutPostRedisplay();
+        glutTimerFunc(30,update3,0);
+
+
+    }
+
+
+    else if (g4 == 255 && car2 > 1.5f)
+    {
+        car2=0.0f;
+        //glutPostRedisplay();
+        //glutTimerFunc(30,update3,0);
+
+
+    }
+
+}
+
+void update10(int value100) {
+    ////////////////////////////////
+    if(cloud1 > 1.1f) {
+        cloud1 = -1.7f;
+        glutPostRedisplay();
+    } else {
+        cloud1 += .0050f;
+        glutPostRedisplay();
+    }
+    if(cloud2 > 1.7f) {
+        cloud2 = -0.50f;
+        glutPostRedisplay();
+    } else {
+        cloud2 += .0030f;
+        glutPostRedisplay();
+    }
+
+    if(sunset < -.342f) {
+        sunset = +0.40f;
+        //sunset = +0.0f;
+                    if(day == true) {
+                        day = false;
+                    } else {
+                        day = true;
+                    }
+        glutPostRedisplay();
+    } else {
+        sunset -= .0010f;
+        glutPostRedisplay();
+        //cout << sunset << endl;
+    }
+
+
+///////////////////////////////
+glutTimerFunc(40, update10, 0);
+}
+
+//yellow light on
+void yellow(int value4)
+{
+    r3 =255;
+    g3 = 255;
+
+}
+
+//green light on
+void green(int gre)
+{
+    r2=0; r3=0; g3=0; g4=255;
+}
+
+//redlight on
+void red(int value6)
+{
+    r2 =255; g3 = 0; g4= 0;
+
+}
+
+
+
+
+
+
+
+
+void init() {
+   glClearColor(1.0f, 1.f, 1.f,1.0f);
+   glMatrixMode(GL_PROJECTION);
+glLoadIdentity();
+
+}
+
+
+void handleMouse(int button, int state, int x, int y) {
+	if (button == GLUT_LEFT_BUTTON)
+	{
+		if (state == GLUT_DOWN)
+		{
+		    r2 = 0;
+		   yellow(1);
+		  glutTimerFunc(1000,green,0);
+		  glutTimerFunc(1000,update2,0);
+		  update3(1);
+		  printf("clicked at (%d, %d)\n", x, y);
+
+
+
+			printf("clicked at (%d, %d)\n", x, y);
+		}
+	}
+
+	if (button == GLUT_RIGHT_BUTTON)
+	{
+		if (state == GLUT_DOWN)
+		{
+
+		  r2=255;
+		  g4=0;
+		  car1 = 1.0f;
+		  update2(1);
+		  update3(1);
+
+		}
+	}
+	glutPostRedisplay();
+}
+
+void handleKeypress(unsigned char key, int x, int y) {
+
+	switch (key) {glutPostRedisplay();}
+}
+
+
+/////////////////////////////////////////////////
+void weather() {
+    //dayyyyyyyyyyyyyyyyyyy
+    //////////////////
+    //////////////
+    if(day == true){
+        glPushMatrix();
+        //sky
+        glBegin(GL_QUADS);
+            glColor3ub(126,192,238);
+            glVertex2f(-1.0, 0.6);
+            glVertex2f(1, 0.6);
+            glVertex2f(1, 1);
+            glVertex2f(-1.0, 1);
+        glEnd();
+        //sun
+        glTranslatef(0,sunset,0);
+        circle(0.65,0.82,0.12,255,255,51);
+
+        glPopMatrix();
+
+//////////////////////////////////////////////////////////////////
+   ///cloud1
+   glPushMatrix();
+    glTranslatef(cloud1,0,0);
+    //cloud(-0.65,-0.82,0.12,255,1,1);
+    //cloud1
+    drawCloud(0.60,0.85,.050,246,246,246);
+    drawCloud(0.60,0.83,.055,246,246,246);
+    drawCloud(0.64,0.85,.055,246,246,246);
+    drawCloud(0.56,0.80,.055,246,246,246);
+    //glPopMatrix();
+    glPopMatrix();
+    ///cloud2
+   glPushMatrix();
+    glTranslatef(cloud2,0,0);
+    //cloud(-0.65,-0.82,0.12,255,1,1);
+    //cloud1
+    drawCloud(-0.60,0.83,.050,246,246,246);
+    drawCloud(-0.60,0.78,.055,246,246,246);
+    drawCloud(-0.64,0.80,.055,246,246,246);
+    drawCloud(-0.56,0.80,.055,246,246,246);
+
+    //glPopMatrix();
+    glPopMatrix();
+
+
+///////////////////////////////////////////////////////////////////
+
+    } else {
+        //night////////////////////
+        //////////////////////
+        ////////////////
+        glPushMatrix();
+        //sky
+        glBegin(GL_QUADS);
+            glColor3ub(43, 47, 119);
+            glVertex2f(-1.0, 0.6);
+            glVertex2f(1, 0.6);
+            glVertex2f(1, 1);
+            glVertex2f(-1.0, 1);
+        glEnd();
+        glTranslatef(0,sunset,0);
+        //sun
+        circle(0.65,0.82,0.08,204, 204, 204);
+        glPopMatrix();
+
+//////////////////////////////////////////////////////////////////
+   ///cloud1
+   glPushMatrix();
+    glTranslatef(cloud1,0,0);
+    //cloud(-0.65,-0.82,0.12,255,1,1);
+    //cloud1
+    drawCloud(0.60,0.85,.050, 127, 127, 127);
+    drawCloud(0.60,0.83,.055, 127, 127, 127);
+    drawCloud(0.64,0.85,.055, 127, 127, 127);
+    drawCloud(0.56,0.80,.055, 127, 127, 127);
+    //glPopMatrix();
+    glPopMatrix();
+    ///cloud2
+   glPushMatrix();
+    glTranslatef(cloud2,0,0);
+    //cloud(-0.65,-0.82,0.12,255,1,1);
+    //cloud1
+    drawCloud(-0.60,0.83,.050, 127, 127, 127);
+    drawCloud(-0.60,0.78,.055, 127, 127, 127);
+    drawCloud(-0.64,0.80,.055, 127, 127, 127);
+    drawCloud(-0.56,0.80,.055, 127, 127, 127);
+    glPopMatrix();
+    ///////////
+    //stars.....................
+
+///////////////////////////////////////////////////////////////////
+    }
+}
+
+
+void display() {
+   glClear(GL_COLOR_BUFFER_BIT);
+   glLoadIdentity();
+
+//////////////////////////////
+  weather();
+//////////////////////////////
+
+glPushMatrix();
+
+
+//sky
+//  glBegin(GL_QUADS);
+//      glColor3ub(0,255,255);
+//      glVertex2f(-1.0, 0.6);
+//      glVertex2f(1, 0.6);
+//      glVertex2f(1, 1);
+//      glVertex2f(-1.0, 1);
+//   glEnd();
+
+
+//tunnel
+circle(0.0,0.6,0.2,0,0,0);
+
+//sun
+//circle(0.65,0.82,0.12,255,255,51);
+
+
+
+ //road
+   glBegin(GL_QUADS);
+      glColor3ub(40,43,42);
+      glVertex2f( -1.0, -1.0);
+      glVertex2f(  1.0, -1.0);
+      glVertex2f(1.0, 0.6);
+      glVertex2f(-1.0, 0.6);
+   glEnd();
+
+   //left bottom
+   glBegin(GL_QUADS);
+      glColor3ub(34,139,34);
+      glVertex2f(-1.0f, -1.0f);
+      glVertex2f( -0.2, -1.0f);
+      glVertex2f( -0.2,  -0.35);
+      glVertex2f(-1.0,  -0.35);
+   glEnd();
+
+   //building 1
+glBegin(GL_QUADS);
+      glColor3ub(255,128,0);
+      glVertex2f(-0.8f, -0.75f);
+      glVertex2f( -0.55, -0.75f);
+      glVertex2f( -0.55,  -0.55);
+      glVertex2f(-0.8,  -0.55);
+   glEnd();
+
+      glBegin(GL_QUADS);//window 1
+      glColor3ub(255,255,255);
+      glVertex2f(-0.75, -0.60f);
+      glVertex2f( -0.71, -0.60f);
+      glVertex2f( -0.71,  -0.65);
+      glVertex2f(-0.75,  -0.65);
+   glEnd();
+
+   glBegin(GL_QUADS);
+      glColor3ub(102,51,0);
+      glVertex2f(-0.69, -0.75f);
+      glVertex2f( -0.65, -0.75f);
+      glVertex2f( -0.65,  -0.65);
+      glVertex2f(-0.69,  -0.65);
+   glEnd();
+
+ glBegin(GL_TRIANGLES);
+   glColor3ub(102,51,0);
+   glVertex2f(-0.8, -0.55);
+      glVertex2f( -0.55, -0.55);
+      glVertex2f( -0.675,  -0.45);
+      glEnd();
+
+
+
+
+
+
+   //right bottom
+   glBegin(GL_QUADS);
+      glColor3ub(34,139,34);
+      glVertex2f( 1.0, -1.0);
+      glVertex2f( 0.2, -1.0);
+      glVertex2f( 0.2, -0.35);
+      glVertex2f( 1.0, -0.35);
+   glEnd();
+
+
+   //left upper
+   glBegin(GL_QUADS);
+      glColor3ub(34,139,34);
+      glVertex2f(-1.0, 0.6);
+      glVertex2f( -0.2,0.6);
+      glVertex2f(-0.2, 0.1);
+      glVertex2f(-1.0, 0.1);
+   glEnd();
+
+
+   //right upper
+   glBegin(GL_QUADS);
+      glColor3ub(34,139,34);
+      glVertex2f(1.0, 0.6);
+      glVertex2f( 0.2, 0.6);
+      glVertex2f(0.2, 0.1);
+      glVertex2f(1.0, 0.1);
+   glEnd();
+
+   //building 2
+glBegin(GL_QUADS);
+      glColor3ub(255,128,0);
+      glVertex2f(0.8f, 0.45);
+      glVertex2f( 0.55, 0.45f);
+      glVertex2f( 0.55,  0.25);
+      glVertex2f(0.8,  0.25);
+   glEnd();
+
+glBegin(GL_QUADS);//window 2
+      glColor3ub(255,255,255);
+      glVertex2f(0.75, 0.35f);
+      glVertex2f(0.71, 0.35f);
+      glVertex2f( 0.71,  0.40);
+      glVertex2f(0.75,  0.40);
+   glEnd();
+
+   glBegin(GL_QUADS);
+      glColor3ub(102,51,0);
+      glVertex2f(0.69, 0.25f);
+      glVertex2f( 0.65, 0.25f);
+      glVertex2f( 0.65,  0.35);
+      glVertex2f(0.69,  0.35);
+   glEnd();
+
+ glBegin(GL_TRIANGLES);
+   glColor3ub(102,51,0);
+   glVertex2f(0.8, 0.45);
+      glVertex2f( 0.55, 0.45);
+      glVertex2f( 0.675,  0.55);
+      glEnd();
+
+
+
+
+
+
+   //zebra cross bottom
+   glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(-0.15, -0.5);
+      glVertex2f( -0.1, -0.5);
+      glVertex2f(-0.1, -0.35);
+      glVertex2f(-0.15, -0.35);
+   glEnd();
+
+    glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(-0.05, -0.5);
+      glVertex2f( 0.00, -0.5);
+      glVertex2f( 0.00, -0.35);
+      glVertex2f(-0.05, -0.35);
+   glEnd();
+
+
+     glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f( 0.05, -0.5);
+      glVertex2f( 0.10, -0.5);
+      glVertex2f( 0.10, -0.35);
+      glVertex2f( 0.05, -0.35);
+   glEnd();
+
+
+      glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f( 0.15, -0.5);
+      glVertex2f( 0.20, -0.5);
+      glVertex2f( 0.20, -0.35);
+      glVertex2f( 0.15, -0.35);
+   glEnd();
+
+
+
+
+   //zebra cross top
+   glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(0.15, 0.25);
+      glVertex2f(0.1, 0.25);
+      glVertex2f(0.1, 0.1);
+      glVertex2f(0.15, 0.1);
+   glEnd();
+
+    glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(0.05, 0.25);
+      glVertex2f( -0.00, 0.25);
+      glVertex2f( -0.00, 0.1);
+      glVertex2f(0.05, 0.1);
+   glEnd();
+
+
+     glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f( -0.05, 0.25);
+      glVertex2f( -0.10, 0.25);
+      glVertex2f( -0.10, 0.1);
+      glVertex2f( -0.05, 0.1);
+   glEnd();
+
+
+      glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f( -0.15, 0.25);
+      glVertex2f( -0.20, 0.25);
+      glVertex2f( -0.20, 0.1);
+      glVertex2f( -0.15, 0.1);
+   glEnd();
+
+
+   //zebra left
+   glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(-0.35, -0.30);
+      glVertex2f(-0.20, -0.30);
+      glVertex2f(-0.20, -0.25);
+      glVertex2f(-0.35, -0.25);
+   glEnd();
+
+   glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(-0.35, -0.20);
+      glVertex2f(-0.20, -0.20);
+      glVertex2f(-0.20, -0.15);
+      glVertex2f(-0.35, -0.15);
+   glEnd();
+
+    glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(-0.35, -0.10);
+      glVertex2f(-0.20, -0.10);
+      glVertex2f(-0.20, -0.05);
+      glVertex2f(-0.35, -0.05);
+   glEnd();
+
+     glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(-0.35, -0.0);
+      glVertex2f(-0.20, -0.0);
+      glVertex2f(-0.20, 0.05);
+      glVertex2f(-0.35, 0.05);
+   glEnd();
+
+
+//zebra right
+
+ glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(0.35, -0.30);
+      glVertex2f(0.20, -0.30);
+      glVertex2f(0.20, -0.25);
+      glVertex2f(0.35, -0.25);
+   glEnd();
+
+   glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(0.35, -0.20);
+      glVertex2f(0.20, -0.20);
+      glVertex2f(0.20, -0.15);
+      glVertex2f(0.35, -0.15);
+   glEnd();
+
+    glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(0.35, -0.10);
+      glVertex2f(0.20, -0.10);
+      glVertex2f(0.20, -0.05);
+      glVertex2f(0.35, -0.05);
+   glEnd();
+
+     glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(0.35, -0.0);
+      glVertex2f(0.20, -0.0);
+      glVertex2f(0.20, 0.05);
+      glVertex2f(0.35, 0.05);
+   glEnd();
+
+
+
+
+glPopMatrix();
+
+
+
+//car 1
+glPushMatrix();
+
+glTranslatef(0.0f,car1,0.0f);
+ glBegin(GL_QUADS);
+      glColor3ub(5,255,255);
+      glVertex2f(-0.08, -1.0);
+      glVertex2f(0.09, -1.0);
+      glVertex2f(0.09, -0.7);
+      glVertex2f(-0.08, -0.7);
+   glEnd();
+
+
+   glBegin(GL_QUADS);
+      glColor3ub(255,255,255);
+      glVertex2f(-0.075, -0.98);
+      glVertex2f(0.085, -0.98);
+      glVertex2f(0.075, -0.95);
+      glVertex2f(-0.065, -0.95);
+   glEnd();
+
+
+   glBegin(GL_QUADS);
+
+      glVertex2f(-0.07, -0.80);
+      glVertex2f(0.085, -0.80);
+      glVertex2f(0.075, -0.87);
+      glVertex2f(-0.06, -0.87);
+   glEnd();
+
+
+
+
+
+glPopMatrix();
+
+
+
+//car2
+
+
+glPushMatrix();
+glTranslatef(car2 , 0.0f,0.0f);
+
+glBegin(GL_QUADS);
+glColor3ub(0,255,255);
+    glVertex2f (-0.90f, -0.22f);
+    glVertex2f (-0.50f, -0.22f);
+    glVertex2f (-0.50f, -0.10f);
+    glVertex2f (-0.90f, -0.10f);
+
+    glEnd();
+
+
+
+   glBegin(GL_QUADS);
+   glColor3ub(0,255,55);
+    glVertex2f (-0.85f, -0.10f);
+    glVertex2f (-0.60f, -0.10f);
+    glVertex2f (-0.65f, -0.01f);
+    glVertex2f (-0.82f, -0.01f);
+
+    glEnd();
+
+
+
+
+
+   glBegin(GL_TRIANGLES);
+   glColor3ub(1,0,25);
+    glVertex2f (-.83,-.10);
+    glVertex2f (-.80,-.10);
+    glVertex2f (-.80,-0.02);
+
+    glEnd();
+
+
+     glBegin(GL_QUADS);
+     glColor3ub(1,2,25);
+    glVertex2f (-0.77f, -0.10f);
+    glVertex2f (-0.62f, -0.10f);
+    glVertex2f (-0.65f, -0.03f);
+    glVertex2f (-0.77f, -0.03f);
+
+    glEnd();
+
+
+     circle(-.795,-.22,.05,0,0,0);
+     circle(-.795,-.22,.04,255,255,255);
+      circle(-.61,-.22,.05,0,0,0);
+      circle(-.61,-.22,.04,255,255,255);
+
+
+glPopMatrix();
+glLoadIdentity();
+
+
+//road light
+glBegin(GL_QUADS);
+      glColor3ub(0,0,0);
+      glVertex2f(-0.24, 0.1);
+      glVertex2f(-0.26, 0.1);
+      glVertex2f(-0.26, 0.2);
+      glVertex2f(-0.24, 0.2);
+   glEnd();
+
+   glBegin(GL_QUADS);
+      glColor3ub(0,0,0);
+      glVertex2f(-0.22, 0.2);
+      glVertex2f(-0.28, 0.2);
+      glVertex2f(-0.28, 0.4);
+      glVertex2f(-0.22, 0.4);
+   glEnd();
+
+   tLight1(-.25,0.37,-0.021,r2,0,0);
+   tLight2(-.25,0.31,-0.021,r3,g3,0);
+   tLight3(-.25,0.25,-0.021,0,g4,0);
+
+
+/*
+glPushMatrix();
+glTranslatef(cloud,0.0f,0.0f);
+//cloud
+
+     circle(-0.70,0.8,0.1,255,255,255);
+     circle(-0.65,0.8,0.065,255,255,255);
+     circle(-0.60,0.8,0.08,255,255,255);
+     circle(-0.70,0.78,0.08,255,255,255);
+     circle(-0.65,0.78,0.075,255,255,255);
+     circle(-0.60,0.78,0.078,255,255,255);
+
+     circle(-0.9,0.8,0.1,255,255,255);
+     circle(-0.85,0.8,0.065,255,255,255);
+     circle(-0.80,0.8,0.08,255,255,255);
+     circle(-0.9,0.78,0.08,255,255,255);
+     circle(-0.85,0.78,0.075,255,255,255);
+     circle(-0.80,0.78,0.078,255,255,255);
+
+     circle(-0.50,0.9,0.1,255,255,255);
+     circle(-0.45,0.9,0.065,255,255,255);
+     circle(-0.40,0.9,0.08,255,255,255);
+     circle(-0.50,0.88,0.08,255,255,255);
+     circle(-0.45,0.88,0.075,255,255,255);
+     circle(-0.50,0.88,0.078,255,255,255);
+
+     circle(-0.50,0.9,0.1,255,255,255);
+     circle(-0.45,0.9,0.065,255,255,255);
+     circle(-0.40,0.9,0.08,255,255,255);
+     circle(-0.50,0.88,0.08,255,255,255);
+     circle(-0.45,0.88,0.075,255,255,255);
+     circle(-0.40,0.88,0.078,255,255,255);
+
+      circle(.95,0.9,0.1,255,255,255);
+     circle(.90,0.9,0.065,255,255,255);
+     circle(.85,0.9,0.08,255,255,255);
+     circle(.95,0.88,0.08,255,255,255);
+     circle(.90,0.88,0.075,255,255,255);
+     circle(.85,0.88,0.078,255,255,255);
+
+     circle(.95,0.9,0.1,255,255,255);
+     circle(.90,0.9,0.065,255,255,255);
+     circle(.85,0.9,0.08,255,255,255);
+     circle(.95,0.88,0.08,255,255,255);
+     circle(.90,0.88,0.075,255,255,255);
+     circle(.85,0.88,0.078,255,255,255);
+
+
+
+
+glPopMatrix();
+
+*/
+
+   glFlush();
+}
+
+
+
+int main(int argc, char** argv) {
+   glutInit(&argc, argv);
+   glutInitWindowSize(750, 650);
+   glutInitWindowPosition(100, 60);
+   glutCreateWindow("Basic Animation");
+   glutDisplayFunc(display);
+   init();
+   glutKeyboardFunc(handleKeypress);
+   glutMouseFunc(handleMouse);
+   glutTimerFunc(1000, update, 0);
+   glutTimerFunc(0,update3,0);
+   //glutTimerFunc(0,cloudfunc,0);
+   glutTimerFunc(1000,update10,0);
+   glutMainLoop();
+   return 0;
+}
+
